@@ -10,10 +10,22 @@ build:
                 mv bin/ ../
 
         - script:
+            name: fetch confd
+            code: |
+                wget https://github.com/kelseyhightower/confd/releases/download/v0.10.0/confd-0.10.0-linux-amd64
+                chmod +x confd
+
+        - script:
             name: build aci
             code: |
                 ./bin/acbuild begin
-                ./bin/acbuild dependency add docker://nginx
+                ./bin/acbuild dependency add quay.io/fermayo/ubuntu
+                ./bin/acbuild copy boot.sh /opt/boot.sh
+                ./bin/acbuild copy confd /usr/local/bin/confd
+                ./bin/acbuild run -- apt-get update
+                ./bin/acbuild run -- apt-get -y install nginx
+                ./bin/acbuild set-exec /opt/boot.sh
+                ./bin/acbuild set-name blau-io/kubernetes-proxy
                 ./bin/acbuild write kubernetes-proxy.aci
                 ./bin/acbuild end
 
