@@ -1,0 +1,30 @@
+box: ubuntu:latest
+deploy:
+    steps:
+        - script:
+            name: install acbuild
+            code: |
+                git clone git@github.com:appc/acbuild
+                ./acbuild/build
+                cp -av acbuild/bin/* ./
+
+        - script:
+            name: build aci
+            code: |
+                ./acbuild begin
+                ./acbuild dependency add docker://nginx
+                ./acbuild write kubernetes-proxy.aci
+                ./acbuild end
+
+        - github-create-release:
+            token: $GITHUB_TOKEN
+            tag: v0.0.1
+
+        - github-upload-asset:
+            token: $GITHUB_TOKEN
+            file: kubernetes-proxy.aci
+
+    after-steps:
+        - slack-notifier:
+            url: $SLACK_URL
+            username: wercker
