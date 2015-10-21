@@ -5,8 +5,9 @@ build:
             name: install acbuild
             code: |
                 git clone https://github.com/appc/acbuild.git
-                ./acbuild/build
-                cp -av acbuild/bin/* ./
+                cd acbuild
+                ./build
+                cp -av bin/* ../
 
         - script:
             name: build aci
