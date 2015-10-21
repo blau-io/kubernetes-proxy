@@ -1,6 +1,5 @@
 box: ubuntu:latest
 build:
-deploy:
     steps:
         - script:
             name: install acbuild
@@ -17,6 +16,13 @@ deploy:
                 ./acbuild write kubernetes-proxy.aci
                 ./acbuild end
 
+    after-steps:
+        - slack-notifier:
+            url: $SLACK_URL
+            username: wercker
+
+deploy:
+    steps:
         - github-create-release:
             token: $GITHUB_TOKEN
             tag: v0.0.1
