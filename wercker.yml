@@ -7,15 +7,15 @@ build:
                 git clone https://github.com/appc/acbuild.git
                 cd acbuild
                 ./build
-                cp -av bin/* ../
+                mv bin/ ../
 
         - script:
             name: build aci
             code: |
-                ./acbuild begin
-                ./acbuild dependency add docker://nginx
-                ./acbuild write kubernetes-proxy.aci
-                ./acbuild end
+                ./bin/acbuild begin
+                ./bin/acbuild dependency add docker://nginx
+                ./bin/acbuild write kubernetes-proxy.aci
+                ./bin/acbuild end
 
     after-steps:
         - slack-notifier:
