@@ -1,9 +1,6 @@
-box: ubuntu:latest
+box: golang:1.4
 build:
     steps:
-        - install-packages:
-            packages: git
-
         - script:
             name: install acbuild
             code: |
