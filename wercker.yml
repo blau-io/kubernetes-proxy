@@ -22,7 +22,7 @@ build:
                 git clone https://github.com/klizhentas/deb2aci.git src/github.com/klizhentas/deb2aci
                 cd src/github.com/klizhentas/deb2aci
                 go get ./...
-                go install
+                go build
 
         - script:
             name: build aci
