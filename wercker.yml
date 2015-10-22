@@ -12,6 +12,7 @@ build:
                 wget -O appc.tar.gz https://github.com/appc/spec/releases/download/v0.7.1/appc-v0.7.1.tar.gz
                 tar -xzf appc.tar.gz --strip 1 --wildcards --no-anchored 'actool'
                 rm -rf appc.tar.gz
+                mv actool /usr/local/bin/actool
 
         - script:
             name: install confd
@@ -26,12 +27,12 @@ build:
                 cd src/github.com/klizhentas/deb2aci
                 go get -v ./...
                 go build -v
+                mv $GOPATH/bin/deb2aci /usr/local/bin/deb2aci
 
         - script:
             name: build aci
             code: |
-                mv $GOPATH/bin/deb2aci ./
-                ./deb2aci -pkg nginx -image kubernetes-proxy.aci -manifest kubernetes-proxy.manifest.json
+                deb2aci -pkg nginx -image kubernetes-proxy.aci -manifest kubernetes-proxy.manifest.json
 
     after-steps:
         - slack-notifier:
