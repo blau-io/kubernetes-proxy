@@ -7,7 +7,7 @@ build:
 deploy:
     steps:
         - install-packages:
-            packages: git golang-go wget
+            packages: curl git golang-go wget
 
         - script:
             name: export GOPATH
