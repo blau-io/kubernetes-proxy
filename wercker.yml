@@ -1,6 +1,9 @@
 box: ubuntu:latest
 build:
     steps:
+        - install-packages:
+            packages: git wget
+
         - script:
             name: install actool
             code: |
@@ -20,11 +23,11 @@ build:
                 git clone https://github.com/klizhentas/deb2aci.git temp
                 mv temp/deb2aci ./
                 rm -rf temp
-                ./deb2aci nginx nginx.aci nginx.manifest
 
         - script:
             name: build aci
             code: |
+                ./deb2aci nginx nginx.aci nginx.manifest
                 #TODO
                 mv nginx.aci kubernetes-proxy.aci
 
