@@ -1,10 +1,10 @@
-box: pallet/golang
+box: ubuntu:latest
 build:
     steps:
-        - setup-go-workspace
-
         - install-packages:
-            packages: git wget
+            packages: curl git golang-go wget
+
+        - setup-go-workspace
 
         - script:
             name: install actool
