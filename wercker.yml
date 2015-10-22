@@ -2,7 +2,7 @@ box: ubuntu:latest
 build:
     steps:
         - install-packages:
-            packages: curl git golang-go wget
+            packages: git golang-go wget
 
         - script:
             name: export GOPATH
@@ -45,6 +45,9 @@ build:
 
 deploy:
     steps:
+        - install-packages:
+            packages: curl
+
         - github-create-release:
             token: $GITHUB_TOKEN
             tag: v0.0.1
