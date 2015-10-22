@@ -1,6 +1,11 @@
 box: ubuntu:latest
 build:
     steps:
+        - script:
+            name: echo
+            code: echo "Nothing to do here"
+deploy:
+    steps:
         - install-packages:
             packages: git golang-go wget
 
@@ -37,18 +42,6 @@ build:
             name: build aci
             code: |
                 deb2aci -pkg nginx -image kubernetes-proxy.aci -manifest kubernetes-proxy.manifest.json
-
-        - internal/store-container
-
-    after-steps:
-        - slack-notifier:
-            url: $SLACK_URL
-            username: wercker
-
-deploy:
-    steps:
-        - install-packages:
-            packages: curl
 
         - github-create-release:
             token: $GITHUB_TOKEN
