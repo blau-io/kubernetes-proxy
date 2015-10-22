@@ -4,7 +4,7 @@ build:
         - setup-go-workspace
 
         - install-packages:
-            packages: wget
+            packages: git wget
 
         - script:
             name: install actool
