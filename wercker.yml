@@ -21,13 +21,16 @@ build:
             code: |
                 git clone https://github.com/klizhentas/deb2aci.git src/github.com/klizhentas/deb2aci
                 cd src/github.com/klizhentas/deb2aci
-                go get ./...
-                go build
+                go get -v ./...
+                go build -v
+                cd ../../../..
+                mv bin/deb2aci ./
+                rm rm -rf bin/ pkg/ src/
 
         - script:
             name: build aci
             code: |
-                ./bin/deb2aci -pkg nginx -image kubernetes-proxy.aci -manifest kubernetes-proxy.manifest.json
+                ./deb2aci -pkg nginx -image kubernetes-proxy.aci -manifest kubernetes-proxy.manifest.json
 
     after-steps:
         - slack-notifier:
