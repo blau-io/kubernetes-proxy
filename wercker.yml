@@ -23,13 +23,11 @@ build:
                 cd src/github.com/klizhentas/deb2aci
                 go get -v ./...
                 go build -v
-                cd ../../../..
-                mv bin/deb2aci ./
-                rm rm -rf bin/ pkg/ src/
 
         - script:
             name: build aci
             code: |
+                mv $GOPATH/bin/deb2aci ./
                 ./deb2aci -pkg nginx -image kubernetes-proxy.aci -manifest kubernetes-proxy.manifest.json
 
     after-steps:
