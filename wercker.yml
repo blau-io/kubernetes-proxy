@@ -4,6 +4,10 @@ build:
         - install-packages:
             packages: curl git golang-go wget
 
+        - script:
+            name: export GOPATH
+            code: export GOPATH=/usr/local/lib/go
+
         - setup-go-workspace
 
         - script:
