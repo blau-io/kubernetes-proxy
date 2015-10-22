@@ -4,6 +4,6 @@
 
 This is an nginx reverse proxy together with confd. I'm out of creative names, so I'm just calling it what it is.
 
-The reason we are creating a new container instead of using one of the many exisiting ones is that we plan on integrating (let's encrypt)[https://letsencrypt.org] once it launches.
+The reason we are creating a new container instead of using one of the many exisiting ones is that we plan on integrating [let's encrypt](https://letsencrypt.org) once it launches.
 
 **This project is still under heavy development, it is not recommended to use it in production.**
