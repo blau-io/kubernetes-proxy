@@ -1,7 +1,10 @@
-box: golang:1.4
+box: pallet/golang
 build:
     steps:
         - setup-go-workspace
+
+        - install-packages:
+            packages: wget
 
         - script:
             name: install actool
