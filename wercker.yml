@@ -2,32 +2,31 @@ box: golang:1.4
 build:
     steps:
         - script:
-            name: install acbuild
+            name: install actool
             code: |
-                git clone https://github.com/appc/acbuild.git
-                cd acbuild
-                ./build
-                mv bin/ ../
+                wget -O appc.tar.gz https://github.com/appc/spec/releases/download/v0.7.1/appc-v0.7.1.tar.gz
+                tar -xzf appc.tar.gz --strip 1 --wildcards --no-anchored 'actool'
+                rm -rf appc.tar.gz
 
         - script:
-            name: fetch confd
+            name: install confd
             code: |
                 wget -O confd https://github.com/kelseyhightower/confd/releases/download/v0.10.0/confd-0.10.0-linux-amd64
                 chmod +x confd
 
         - script:
+            name: install deb2aci
+            code: |
+                git clone https://github.com/klizhentas/deb2aci.git temp
+                mv temp/deb2aci ./
+                rm -rf temp
+                ./deb2aci nginx nginx.aci nginx.manifest
+
+        - script:
             name: build aci
             code: |
-                ./bin/acbuild begin
-                ./bin/acbuild dependency add quay.io/fermayo/ubuntu
-                ./bin/acbuild copy boot.sh /opt/boot.sh
-                ./bin/acbuild copy confd /usr/local/bin/confd
-                ./bin/acbuild run -- apt-get update
-                ./bin/acbuild run -- apt-get -y install nginx
-                ./bin/acbuild set-exec /opt/boot.sh
-                ./bin/acbuild set-name blau-io/kubernetes-proxy
-                ./bin/acbuild write kubernetes-proxy.aci
-                ./bin/acbuild end
+                #TODO
+                mv nginx.aci kubernetes-proxy.aci
 
     after-steps:
         - slack-notifier:
