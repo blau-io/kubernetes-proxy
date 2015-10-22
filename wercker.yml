@@ -1,8 +1,7 @@
-box: ubuntu:latest
+box: golang:1.4
 build:
     steps:
-        - install-packages:
-            packages: git wget
+        - setup-go-workspace
 
         - script:
             name: install actool
@@ -20,9 +19,13 @@ build:
         - script:
             name: install deb2aci
             code: |
-                git clone https://github.com/klizhentas/deb2aci.git temp
-                mv temp/deb2aci ./
-                rm -rf temp
+                git clone https://github.com/klizhentas/deb2aci.git src/github.com/klizhentas/deb2aci
+                cd src/github.com/klizhentas/deb2aci
+                go get ./...
+                go install
+                cd ../../../../
+                mv bin/deb2aci ./
+                rm -rf bin pkg src
 
         - script:
             name: build aci
