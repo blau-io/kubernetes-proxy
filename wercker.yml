@@ -23,16 +23,11 @@ build:
                 cd src/github.com/klizhentas/deb2aci
                 go get ./...
                 go install
-                cd ../../../../
-                mv bin/deb2aci ./
-                rm -rf bin pkg src
 
         - script:
             name: build aci
             code: |
-                ./deb2aci nginx nginx.aci nginx.manifest
-                #TODO
-                mv nginx.aci kubernetes-proxy.aci
+                ./bin/deb2aci -pkg nginx -image kubernetes-proxy.aci -manifest kubernetes-proxy.manifest.json
 
     after-steps:
         - slack-notifier:
