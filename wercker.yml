@@ -38,6 +38,8 @@ build:
             code: |
                 deb2aci -pkg nginx -image kubernetes-proxy.aci -manifest kubernetes-proxy.manifest.json
 
+        - internal/store-container
+
     after-steps:
         - slack-notifier:
             url: $SLACK_URL
