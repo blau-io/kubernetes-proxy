@@ -8,7 +8,7 @@
     ],
     "app": {
         "exec": [
-            "/usr/sbin/nginx"
+            "/usr/bin/boot.sh"
         ],
         "user": "0",
         "group": "0"

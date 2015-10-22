@@ -1,0 +1,7 @@
+[template]
+src = "nginx.conf.tmpl"
+dest = "/etc/nginx/conf.d/proxy.conf"
+owner = "root"
+mode = "0644"
+check_cmd = "/usr/sbin/nginx -t"
+reload_cmd = "/etc/init.d/nginx reload"
