@@ -18,7 +18,7 @@ deploy:
         - script:
             name: install actool
             code: |
-                curl -o appc.tar.gz https://github.com/appc/spec/releases/download/v0.7.1/appc-v0.7.1.tar.gz
+                curl -SLo appc.tar.gz https://github.com/appc/spec/releases/download/v0.7.1/appc-v0.7.1.tar.gz
                 tar -xzf appc.tar.gz --strip 1 --wildcards \
                     --no-anchored 'actool'
                 rm -rf appc.tar.gz

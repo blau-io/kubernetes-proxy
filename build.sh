@@ -15,33 +15,25 @@ check actool curl deb2aci git go tar
 
 # Install confd
 if ! [-x "confd"]; then
-    curl -o confd https://github.com/kelseyhightower/confd/releases/download/v0.10.0/confd-0.10.0-linux-amd64
+    curl -SLo confd https://github.com/kelseyhightower/confd/releases/download/v0.10.0/confd-0.10.0-linux-amd64
     chmod +x confd
 fi
 
 # Base image
-deb2aci -pkg dash -pkg nginx -image kubernetes-proxy.aci \
-    -manifest kubernetes-proxy.manifest.json
-mkdir aci
-tar -xvf kubernetes-proxy.aci -C aci/
-rm -rvf kubernetes-proxy.aci
+deb2aci -pkg dash -pkg nginx -image base.aci \
+        -manifest kubernetes-proxy/kubernetes-proxy.manifest.json
+mkdir tmp && tar -xf base.aci -C tmp/
 
-# Setup Confd
-mkdir -p aci/rootfs/etc/confd/
-mv -v confd aci/rootfs/usr/bin/confd
-cp -av conf.d aci/rootfs/etc/confd/conf.d
-cp -av templates aci/rootfs/etc/confd/templates
-
-# Setup Nginx
-rm -rvf aci/rootfs/etc/nginx/conf.d/*
-cp -av nginx/nginx.conf aci/rootfs/etc/nginx/nginx.conf
-
-# Setup Boot script
-cp -av scripts/boot.sh aci/rootfs/usr/bin/boot.sh
+# Setup rootfs
+cp -av kubernetes-proxy/rootfs tmp/
+mv -v confd tmp/rootfs/usr/bin/confd
+rm -rvf tmp/rootfs/etc/nginx/conf.d/*
 
 # Pack ACI
-actool build aci/ kubernetes-proxy.aci
+echo "packing final ACI"
+actool build tmp/ kubernetes-proxy.aci
 
 # Clean up
-rm -rvf aci
+rm -rf tmp
+rm -rvf base.aci
 echo "finished"
