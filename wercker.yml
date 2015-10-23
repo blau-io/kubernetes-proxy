@@ -19,7 +19,8 @@ deploy:
             name: install actool
             code: |
                 wget -O appc.tar.gz https://github.com/appc/spec/releases/download/v0.7.1/appc-v0.7.1.tar.gz
-                tar -xzf appc.tar.gz --strip 1 --wildcards --no-anchored 'actool'
+                tar -xzf appc.tar.gz --strip 1 --wildcards \
+                    --no-anchored 'actool'
                 rm -rf appc.tar.gz
                 mv actool /usr/local/bin/actool
 
@@ -32,7 +33,8 @@ deploy:
         - script:
             name: install deb2aci
             code: |
-                git clone https://github.com/klizhentas/deb2aci.git src/github.com/klizhentas/deb2aci
+                git clone https://github.com/klizhentas/deb2aci.git \
+                    src/github.com/klizhentas/deb2aci
                 cd src/github.com/klizhentas/deb2aci
                 go get -v ./...
                 go build -v
@@ -42,7 +44,8 @@ deploy:
             name: build aci
             code: |
                 # Base image
-                deb2aci -pkg nginx -image kubernetes-proxy.aci -manifest kubernetes-proxy.manifest.json
+                deb2aci -pkg bash -pkg nginx -image kubernetes-proxy.aci \
+                    -manifest kubernetes-proxy.manifest.json
                 mkdir aci
                 tar -xf kubernetes-proxy.aci -C aci/
                 rm -rf kubernetes-proxy.aci
