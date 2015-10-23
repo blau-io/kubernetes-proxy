@@ -1,5 +1,5 @@
 #!/bin/sh
-set -eo pipefail
+set -euf
 
 # Loop until Confd created the first config gile
 until /usr/bin/confd -onetime \
