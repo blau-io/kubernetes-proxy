@@ -43,22 +43,26 @@ deploy:
             code: |
                 # Base image
                 deb2aci -pkg nginx -image kubernetes-proxy.aci -manifest kubernetes-proxy.manifest.json
-                tar -xf kubernetes-proxy.aci
+                mkdir aci
+                tar -xf kubernetes-proxy.aci -C aci/
                 rm -rf kubernetes-proxy.aci
 
                 # Setup Confd
-                mkdir -p rootfs/etc/confd/
-                mv confd rootfs/usr/bin/confd
-                mv conf.d rootfs/etc/confd/conf.d
-                mv templates rootfs/etc/confd/templates
+                mkdir -p aci/rootfs/etc/confd/
+                mv confd aci/rootfs/usr/bin/confd
+                mv conf.d aci/rootfs/etc/confd/conf.d
+                mv templates aci/rootfs/etc/confd/templates
 
                 # Setup Nginx
-                rm -rf rootfs/etc/nginx/conf.d/*
-                ln -sf /dev/stdout rootfs/var/log/nginx/access.log
-                ln -sf /dev/stderr rootfs/var/log/nginx/error.log
+                rm -rf aci/rootfs/etc/nginx/conf.d/*
+                ln -sf /dev/stdout aci/rootfs/var/log/nginx/access.log
+                ln -sf /dev/stderr aci/rootfs/var/log/nginx/error.log
 
                 # Setup Boot script
-                mv scripts/boot.sh rootfs/usr/bin/boot.sh
+                mv scripts/boot.sh aci/rootfs/usr/bin/boot.sh
+
+                # Pack ACI
+                actool build aci/ kubernetes-proxy.aci
 
         - github-create-release:
             token: $GITHUB_TOKEN
