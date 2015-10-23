@@ -44,8 +44,7 @@ deploy:
             name: build aci
             code: |
                 # Base image
-                deb2aci -pkg bash -pkg libtinfo5 -pkg nginx \
-                    -image kubernetes-proxy.aci \
+                deb2aci -pkg dash -pkg nginx -image kubernetes-proxy.aci \
                     -manifest kubernetes-proxy.manifest.json
                 mkdir aci
                 tar -xf kubernetes-proxy.aci -C aci/
