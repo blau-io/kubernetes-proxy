@@ -58,6 +58,7 @@ deploy:
 
                 # Setup Nginx
                 rm -rf aci/rootfs/etc/nginx/conf.d/*
+                mv nginx/* aci/rootfs/etc/nginx/
 
                 # Setup Boot script
                 mv scripts/boot.sh aci/rootfs/usr/bin/boot.sh
