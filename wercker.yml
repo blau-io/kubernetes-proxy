@@ -58,8 +58,6 @@ deploy:
 
                 # Setup Nginx
                 rm -rf aci/rootfs/etc/nginx/conf.d/*
-                ln -sf /dev/stdout aci/rootfs/var/log/nginx/access.log
-                ln -sf /dev/stderr aci/rootfs/var/log/nginx/error.log
 
                 # Setup Boot script
                 mv scripts/boot.sh aci/rootfs/usr/bin/boot.sh
