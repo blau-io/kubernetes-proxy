@@ -7,7 +7,7 @@ build:
 deploy:
     steps:
         - install-packages:
-            packages: curl git golang-go tar wget
+            packages: curl git golang-go tar
 
         - script:
             name: export GOPATH
@@ -18,17 +18,11 @@ deploy:
         - script:
             name: install actool
             code: |
-                wget -O appc.tar.gz https://github.com/appc/spec/releases/download/v0.7.1/appc-v0.7.1.tar.gz
+                curl -o appc.tar.gz https://github.com/appc/spec/releases/download/v0.7.1/appc-v0.7.1.tar.gz
                 tar -xzf appc.tar.gz --strip 1 --wildcards \
                     --no-anchored 'actool'
                 rm -rf appc.tar.gz
                 mv actool /usr/local/bin/actool
-
-        - script:
-            name: install confd
-            code: |
-                wget -O confd https://github.com/kelseyhightower/confd/releases/download/v0.10.0/confd-0.10.0-linux-amd64
-                chmod +x confd
 
         - script:
             name: install deb2aci
@@ -42,29 +36,7 @@ deploy:
 
         - script:
             name: build aci
-            code: |
-                # Base image
-                deb2aci -pkg dash -pkg nginx -image kubernetes-proxy.aci \
-                    -manifest kubernetes-proxy.manifest.json
-                mkdir aci
-                tar -xf kubernetes-proxy.aci -C aci/
-                rm -rf kubernetes-proxy.aci
-
-                # Setup Confd
-                mkdir -p aci/rootfs/etc/confd/
-                mv confd aci/rootfs/usr/bin/confd
-                mv conf.d aci/rootfs/etc/confd/conf.d
-                mv templates aci/rootfs/etc/confd/templates
-
-                # Setup Nginx
-                rm -rf aci/rootfs/etc/nginx/conf.d/*
-                mv nginx/* aci/rootfs/etc/nginx/
-
-                # Setup Boot script
-                mv scripts/boot.sh aci/rootfs/usr/bin/boot.sh
-
-                # Pack ACI
-                actool build aci/ kubernetes-proxy.aci
+            code: /bin/bash build.sh
 
         - github-create-release:
             token: $GITHUB_TOKEN
