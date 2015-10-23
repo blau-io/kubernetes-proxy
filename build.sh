@@ -23,24 +23,25 @@ fi
 deb2aci -pkg dash -pkg nginx -image kubernetes-proxy.aci \
     -manifest kubernetes-proxy.manifest.json
 mkdir aci
-tar -xf kubernetes-proxy.aci -C aci/
-rm -rf kubernetes-proxy.aci
+tar -xvf kubernetes-proxy.aci -C aci/
+rm -rvf kubernetes-proxy.aci
 
 # Setup Confd
 mkdir -p aci/rootfs/etc/confd/
-mv confd aci/rootfs/usr/bin/confd
-cp -a conf.d aci/rootfs/etc/confd/conf.d
-cp -a templates aci/rootfs/etc/confd/templates
+mv -v confd aci/rootfs/usr/bin/confd
+cp -av conf.d aci/rootfs/etc/confd/conf.d
+cp -av templates aci/rootfs/etc/confd/templates
 
 # Setup Nginx
-rm -rf aci/rootfs/etc/nginx/conf.d/*
-cp -a nginx/* aci/rootfs/etc/nginx/
+rm -rvf aci/rootfs/etc/nginx/conf.d/*
+cp -av nginx/nginx.conf aci/rootfs/etc/nginx/nginx.conf
 
 # Setup Boot script
-cp -a scripts/boot.sh aci/rootfs/usr/bin/boot.sh
+cp -av scripts/boot.sh aci/rootfs/usr/bin/boot.sh
 
 # Pack ACI
 actool build aci/ kubernetes-proxy.aci
 
 # Clean up
-rm -rf aci
+rm -rvf aci
+echo "finished"
