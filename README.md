@@ -1,6 +1,6 @@
 #Kubernetes Proxy
 
-**I've stopped updating this project for now as I ran into too many errors (mainly getpwnam). I'm leaving this repo here for other to see**
+**I've stopped updating this project for now as I ran into too many errors (mainly getpwnam). I'm leaving this repo here for others to see**
 
 This is an nginx reverse proxy together with confd. I'm out of creative names, so I'm just calling it what it is.
 
